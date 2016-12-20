@@ -1,4 +1,4 @@
-#!/usr/bin/lua
+#!/usr/bin/lua5.3
 -- replace spaces in a frame with snowflakes randomly
 -- usage: ./snow.lua frame
 

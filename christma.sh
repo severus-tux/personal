@@ -88,9 +88,7 @@ elif checkcmd afplay; then
     grab "$audioMp3" $audio
     afplay $audio &
 elif checkcmd aplay; then
-    # more data transfer is needed for this so it's avoided if at all possible.
-    # the file is split up into two 23M parts due to size limits of google
-    # drive's virus scanner, which makes it difficult to direct download.
+
     (
         for part in "${audioWavUrls[@]}"; do
             grab "$part" - | aplay -q
@@ -101,6 +99,8 @@ else
 fi
 audioPid=$!
 
+wget  -q -O- https://raw.githubusercontent.com/severus-tux/personal/master/snow.lua >./snow.lua
+chmod +x snow.lua
 # main animation loop
 while true :; do
     if ! [ $audioPid -eq 0 ] && ! [ -z "$audioPid" ] && ! [ $(ps -p $audioPid | wc -l) -gt 1 ]; then
@@ -109,6 +109,6 @@ while true :; do
     clear
     currentFrame=$(($currentFrame+1))
     #echo -e "audioPid: $audioPid | currentFrame: $currentFrame | currentFrame mod total: $(($currentFrame%$totalFrames))"
-    cat $frames/$(($currentFrame%$totalFrames))
+    ./snow.lua $frames/$(($currentFrame%$totalFrames))
     sleep 0.5
 done
